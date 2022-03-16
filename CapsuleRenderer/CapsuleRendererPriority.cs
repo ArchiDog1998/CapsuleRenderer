@@ -48,6 +48,9 @@ namespace CapsuleRenderer
         private void DoingSomethingFirst(GH_DocumentEditor editor)
         {
             CapsuleReplacer.Init();
+
+            ToolStripMenuItem displayItem = (ToolStripMenuItem)editor.MainMenuStrip.Items[3];
+            displayItem.DropDownItems.Insert(3, MenuCreator.CreateMajorMenu());
         }
     }
 }
