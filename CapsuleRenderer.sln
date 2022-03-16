@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapsuleRenderer", "CapsuleRenderer\CapsuleRenderer.csproj", "{395429C4-B952-4710-B61C-B5DE0D20110D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{395429C4-B952-4710-B61C-B5DE0D20110D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{395429C4-B952-4710-B61C-B5DE0D20110D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{395429C4-B952-4710-B61C-B5DE0D20110D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{395429C4-B952-4710-B61C-B5DE0D20110D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3D81FAC7-A6F7-4B12-B0E5-7A42D0ED5330}
+	EndGlobalSection
+EndGlobal
