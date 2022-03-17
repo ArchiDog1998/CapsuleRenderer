@@ -126,7 +126,7 @@ namespace CapsuleRenderer
                     G.DrawRectangle(pen, rect);
                     pen.Dispose();
                 }
-                Pen pen2 = new Pen(style.Edge, (float)Datas.OutLineWidth);
+                Pen pen2 = new Pen(style.Edge, Datas.OutLineWidth);
                 G.DrawRectangle(pen2, GH_Convert.ToRectangle(capsule.Box));
                 pen2.Dispose();
             }
@@ -138,7 +138,7 @@ namespace CapsuleRenderer
                     G.DrawPath(pen3, capsule.OutlineShape);
                     pen3.Dispose();
                 }
-                Pen pen4 = new Pen(style.Edge, (float)Datas.OutLineWidth);
+                Pen pen4 = new Pen(style.Edge, Datas.OutLineWidth);
                 pen4.LineJoin = LineJoin.Round;
                 G.DrawPath(pen4, capsule.OutlineShape);
                 pen4.Dispose();
