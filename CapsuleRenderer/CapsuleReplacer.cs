@@ -63,9 +63,9 @@ namespace CapsuleRenderer
                 typeof(CapsuleReplacer).GetRuntimeMethods().Where(m => m.Name.Contains(nameof(RenderOutlines))).First());
 
             ExchangeMethod(typeof(GH_CapsuleRenderEngine).GetRuntimeMethods().Where(m => m.Name.Contains("RenderBackground")).First(),
-                typeof(CapsuleReplacer).GetRuntimeMethods().Where(m => m.Name.Contains(nameof(RenderBackground))).First()); 
-            
-            ExchangeMethod(typeof(GH_CapsuleRenderEngine).GetRuntimeMethods().Where(m => 
+                typeof(CapsuleReplacer).GetRuntimeMethods().Where(m => m.Name.Contains(nameof(RenderBackground))).First());
+
+            ExchangeMethod(typeof(GH_CapsuleRenderEngine).GetRuntimeMethods().Where(m =>
             {
                 if (!m.Name.Contains("CreateRoundedRectangle")) return false;
 
@@ -81,7 +81,7 @@ namespace CapsuleRenderer
                 typeof(CapsuleReplacer).GetRuntimeMethods().Where(m => m.Name.Contains(nameof(CreateRoundedRectangle))).First());
 
             ExchangeMethod(typeof(GH_CapsuleRenderEngine).GetRuntimeMethods().Where(m => m.Name.Contains("CreateJaggedRectangle")).First(),
-                typeof(CapsuleReplacer).GetRuntimeMethods().Where(m => m.Name.Contains(nameof(CreateJaggedRectangle))).First()); 
+                typeof(CapsuleReplacer).GetRuntimeMethods().Where(m => m.Name.Contains(nameof(CreateJaggedRectangle))).First());
         }
 
         public static void Render(this GH_Capsule cap, Graphics G, Image icon, GH_PaletteStyle style)
@@ -189,10 +189,7 @@ namespace CapsuleRenderer
                 rec.Height = 0.1f;
             }
 
-            R0 = Math.Min(Math.Min(R0, rec.Width), rec.Height);
-            R1 = Math.Min(Math.Min(R1, rec.Width), rec.Height);
-            R2 = Math.Min(Math.Min(R2, rec.Width), rec.Height);
-            R3 = Math.Min(Math.Min(R3, rec.Width), rec.Height);
+            AdjustRadius(ref R0, ref R1, ref R2, ref R3, rec.Width, rec.Height);
 
             float D0 = 2f * R0;
             float D1 = 2f * R1;
@@ -251,10 +248,7 @@ namespace CapsuleRenderer
                 rec.Height = 0.1f;
             }
 
-            R0 = Math.Min(Math.Min(R0, rec.Width), rec.Height);
-            R1 = Math.Min(Math.Min(R1, rec.Width), rec.Height);
-            R2 = Math.Min(Math.Min(R2, rec.Width), rec.Height);
-            R3 = Math.Min(Math.Min(R3, rec.Width), rec.Height);
+            AdjustRadius(ref R0, ref R1, ref R2, ref R3, rec.Width, rec.Height);
 
             float D0 = 2f * R0;
             float D1 = 2f * R1;
@@ -310,6 +304,25 @@ namespace CapsuleRenderer
             graphicsPath.CloseAllFigures();
             return graphicsPath;
         }
+
+        private static void AdjustRadius(ref float upperLeft, ref float upperRight, ref float lowerRight, ref float lowerLeft, float width, float height)
+        {
+            AdjustRadius(ref upperLeft, ref upperRight, width);
+            AdjustRadius(ref upperRight, ref lowerRight, height);
+            AdjustRadius(ref lowerRight, ref lowerLeft, width);
+            AdjustRadius(ref lowerLeft, ref upperLeft, height);
+        }
+
+        private static void AdjustRadius(ref float r0, ref float r1, float length)
+        {
+            if (r0 + r1 <= length) return;
+
+            float resize = length/ (r0 + r1);
+
+            r0 *= resize;
+            r1 *= resize;
+        }
+
         internal static bool ExchangeMethod(MethodInfo targetMethod, MethodInfo injectMethod)
         {
             if (targetMethod == null || injectMethod == null)
