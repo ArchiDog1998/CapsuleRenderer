@@ -14,7 +14,7 @@ namespace CapsuleRenderer
     {
         public static ToolStripMenuItem CreateMajorMenu()
         {
-            ToolStripMenuItem major = new ToolStripMenuItem("Capsule Renderer") { ToolTipText = "Advanced options for capsule rendering." };
+            ToolStripMenuItem major = new ToolStripMenuItem("Capsule Renderer", Properties.Resources.CapsuleRendererIcon_24) { ToolTipText = "Advanced options for capsule rendering." };
 
             ToolStripMenuItem highLight = CreateCheckBox("Render Highlight", Datas.IsRenderHighLight, (boolean) => Datas.IsRenderHighLight = boolean);
             major.DropDownItems.Add(highLight);

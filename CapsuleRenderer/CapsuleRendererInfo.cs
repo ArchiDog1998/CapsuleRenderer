@@ -10,10 +10,10 @@ namespace CapsuleRenderer
         public override string Name => "Capsule Renderer";
 
         //Return a 24x24 pixel bitmap to represent this GHA library.
-        public override Bitmap Icon => null;
+        public override Bitmap Icon => Properties.Resources.CapsuleRendererIcon_24;
 
         //Return a short string describing the purpose of this GHA library.
-        public override string Description => "Advanced options for capsule rendering.";
+        public override string Description => "Advanced options for capsule rendering. Icon was made by ZCS.";
 
         public override Guid Id => new Guid("46D4702E-3C86-449A-ACAE-7348E5A9C098");
 
