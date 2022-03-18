@@ -1,0 +1,21 @@
+---
+name: CapsuleRenderer
+version: 0.9.0
+authors:
+- 秋水
+description: >
+  Advanced options for capsule rendering. 
+  
+  It contains three advanced options: Highlight, Flat and Outline. 
+  
+  Special thanks to ZCS for making icon design.
+  
+url: https://github.com/ArchiDog1998/CapsuleRenderer
+keywords:
+- highlight
+- outline
+- flat
+- iconic
+- qiushui
+icon_url: https://static.food4rhino.com/s3fs-public/styles/thumbnail/public/users-files/qiu-shui/app/persistentdataeditor.png
+
