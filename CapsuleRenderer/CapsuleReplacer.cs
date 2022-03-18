@@ -169,7 +169,8 @@ namespace CapsuleRenderer
 
         public static GH_Capsule CreateCapsule(Rectangle box, GH_Palette palette)
         {
-            return GH_Capsule.CreateCapsule(box, palette, Datas.CapsuleRadius, Datas.CapsuleHighLight);
+            int highLight = Math.Min(box.Height - Datas.CapsuleRadius, Datas.CapsuleHighLight);
+            return GH_Capsule.CreateCapsule(box, palette, Datas.CapsuleRadius, highLight);
         }
 
         public static GraphicsPath CreateRoundedRectangle(RectangleF rec, float R0, float R1, float R2, float R3)

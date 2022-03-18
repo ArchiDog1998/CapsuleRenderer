@@ -16,7 +16,8 @@ namespace CapsuleRenderer
         {
             ToolStripMenuItem major = new ToolStripMenuItem("Capsule Renderer") { ToolTipText = "Advanced options for capsule rendering." };
 
-            major.DropDownItems.Add(CreateCheckBox("Render Highlight", Datas.IsRenderHighLight, (boolean) => Datas.IsRenderHighLight = boolean));
+            ToolStripMenuItem highLight = CreateCheckBox("Render Highlight", Datas.IsRenderHighLight, (boolean) => Datas.IsRenderHighLight = boolean);
+            major.DropDownItems.Add(highLight);
             major.DropDownItems.Add(CreateCheckBox("Render Inner Out line", Datas.IsRenderInnerOutLine, (boolean) => Datas.IsRenderInnerOutLine = boolean));
             major.DropDownItems.Add(CreateCheckBox("Render Flat", Datas.IsCapsuleFlat, (boolean) => Datas.IsCapsuleFlat = boolean));
 
@@ -25,7 +26,14 @@ namespace CapsuleRenderer
             GH_DocumentObject.Menu_AppendSeparator(major.DropDown);
             CreateNumberBox(major, "Capsule Radius", Datas.CapsuleRadius, (v) => Datas.CapsuleRadius = (int)v, Datas.capsuleRadiusDefault, 12, 0);
             GH_DocumentObject.Menu_AppendSeparator(major.DropDown);
-            CreateNumberBox(major, "Capsule Highlight", Datas.OutLineWidth, (v) => Datas.CapsuleHighLight = (int)v, Datas.capsuleHighLightDefault, 50, 0);
+            var action = CreateNumberBox(major, "Capsule Highlight", Datas.OutLineWidth, (v) => Datas.CapsuleHighLight = (int)v, Datas.capsuleHighLightDefault, 50, 0);
+
+            action.Invoke(highLight.Checked);
+            highLight.Click += (sender, e) =>
+            {
+                action.Invoke(highLight.Checked);
+            };
+
             return major;
         }
 
@@ -74,7 +82,7 @@ namespace CapsuleRenderer
         }
 
 
-        private static void CreateTextLabel(ToolStripMenuItem item, string name, string tooltips = null)
+        private static ToolStripLabel CreateTextLabel(ToolStripMenuItem item, string name, string tooltips = null)
         {
             ToolStripLabel textBox = new ToolStripLabel(name);
             textBox.TextAlign = ContentAlignment.MiddleCenter;
@@ -82,14 +90,16 @@ namespace CapsuleRenderer
             if (!string.IsNullOrEmpty(tooltips))
                 textBox.ToolTipText = tooltips;
             item.DropDownItems.Add(textBox);
+
+            return textBox;
         }
 
-        private static void CreateNumberBox(ToolStripMenuItem item, string itemName, double originValue, Action<double> valueChange, double valueDefault, double Max, double Min, int decimalPlace = 0)
+        private static Action<bool> CreateNumberBox(ToolStripMenuItem item, string itemName, double originValue, Action<double> valueChange, double valueDefault, double Max, double Min, int decimalPlace = 0)
         {
             item.DropDown.Closing -= DropDown_Closing;
             item.DropDown.Closing += DropDown_Closing;
 
-            CreateTextLabel(item, itemName, $"Value from {Min} to {Max}");
+            ToolStripLabel textBox = CreateTextLabel(item, itemName, $"Value from {Min} to {Max}");
 
             Grasshopper.GUI.GH_DigitScroller slider = new Grasshopper.GUI.GH_DigitScroller
             {
@@ -122,6 +132,8 @@ namespace CapsuleRenderer
                 valueChange.Invoke(valueDefault);
             };
             item.DropDownItems.Add(resetItem);
+
+            return (enable) => slider.Enabled = resetItem.Enabled = textBox.Enabled = enable;
         }
 
         private static void DropDown_Closing(object sender, ToolStripDropDownClosingEventArgs e)
