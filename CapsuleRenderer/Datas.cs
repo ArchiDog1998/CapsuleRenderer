@@ -76,5 +76,17 @@ namespace CapsuleRenderer
                 Instances.ActiveCanvas.Refresh();
             }
         }
+
+        internal static readonly double _capsuleOffsetDistanceDefault = 2;
+        internal static double CapsuleOffsetDistance
+        {
+            get => Instances.Settings.GetValue(_nameSpace + nameof(CapsuleOffsetDistance), _capsuleOffsetDistanceDefault);
+            set
+            {
+                Instances.Settings.SetValue(_nameSpace + nameof(CapsuleOffsetDistance), value);
+                Instances.ActiveCanvas.Refresh();
+
+            }
+        }
     }
 }

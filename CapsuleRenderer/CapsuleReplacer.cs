@@ -1,6 +1,7 @@
 ﻿using Grasshopper.GUI;
 using Grasshopper.GUI.Canvas;
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -82,7 +83,82 @@ namespace CapsuleRenderer
 
             ExchangeMethod(typeof(GH_CapsuleRenderEngine).GetRuntimeMethods().Where(m => m.Name.Contains("CreateJaggedRectangle")).First(),
                 typeof(CapsuleReplacer).GetRuntimeMethods().Where(m => m.Name.Contains(nameof(CreateJaggedRectangle))).First());
+
+            //ExchangeMethod(typeof(GH_CapsuleRenderEngine).GetRuntimeMethods().Where(m => m.Name.Contains("RenderMessage")).First(),
+            //    typeof(CapsuleReplacer).GetRuntimeMethods().Where(m => m.Name.Contains(nameof(RenderMessage))).First());
         }
+
+        //public static Rectangle RenderMessage(this GH_CapsuleRenderEngine engine, Graphics G, string message, GH_PaletteStyle style)
+        //{
+        //    GH_Capsule capsule = (GH_Capsule)_capsuleInfo.GetValue(engine);
+        //    int radius = Datas.CapsuleRadius;
+        //    int dimi = 2 * radius;
+        //    if (message == null)
+        //    {
+        //        return Rectangle.Empty;
+        //    }
+        //    if (message.Length == 0)
+        //    {
+        //        return Rectangle.Empty;
+        //    }
+        //    int zoomFadeMedium = GH_Canvas.ZoomFadeMedium;
+        //    if (zoomFadeMedium < 5)
+        //    {
+        //        return Rectangle.Empty;
+        //    }
+        //    Rectangle box = capsule.Box;
+        //    box.Inflate(-radius, 0);
+        //    box.Y = box.Bottom;
+        //    Font font = capsule.Font;
+        //    if (font == null)
+        //    {
+        //        font = GH_FontServer.StandardAdjusted;
+        //    }
+        //    bool flag = false;
+        //    Size size = GH_FontServer.MeasureString(message, font);
+        //    size.Width += 2 + dimi;
+        //    if (size.Width > box.Width)
+        //    {
+        //        double num = (double)box.Width / (double)size.Width;
+        //        font = GH_FontServer.NewFont(font, Convert.ToSingle((double)font.SizeInPoints * num));
+        //        size = GH_FontServer.MeasureString(message, font);
+        //        flag = true;
+        //    }
+        //    box.Height = Math.Max(size.Height, 2 * radius);
+        //    GraphicsPath graphicsPath = new GraphicsPath();
+        //    graphicsPath.AddArc(box.Left - radius, box.Top, dimi, dimi, 270f, 90f);
+        //    graphicsPath.AddArc(box.Left + radius, box.Bottom - dimi, dimi, dimi, 180f, -90f);
+        //    graphicsPath.AddArc(box.Right - 3 * radius, box.Bottom - dimi, dimi, dimi, 90f, -90f);
+        //    graphicsPath.AddArc(box.Right - radius, box.Top, dimi, dimi, 180f, 90f);
+        //    graphicsPath.CloseAllFigures();
+        //    SolidBrush solidBrush = new SolidBrush(Color.FromArgb(zoomFadeMedium, style.Edge));
+        //    Pen pen = new Pen(Color.FromArgb(zoomFadeMedium, style.Edge))
+        //    {
+        //        LineJoin = LineJoin.Bevel
+        //    };
+        //    G.FillPath(solidBrush, graphicsPath);
+        //    G.DrawPath(pen, graphicsPath);
+        //    pen.Dispose();
+        //    solidBrush.Dispose();
+        //    graphicsPath.Dispose();
+        //    if (G.Transform.Elements[0].Equals(1f))
+        //    {
+        //        G.TextRenderingHint = GH_TextRenderingConstants.GH_CrispText;
+        //    }
+        //    else
+        //    {
+        //        G.TextRenderingHint = GH_TextRenderingConstants.GH_SmoothText;
+        //    }
+        //    SolidBrush solidBrush2 = new SolidBrush(Color.FromArgb(zoomFadeMedium, GH_GraphicsUtil.ForegroundColour(style.Edge, 200)));
+        //    G.DrawString(message, font, solidBrush2, box, GH_TextRenderingConstants.CenterCenter);
+        //    solidBrush2.Dispose();
+        //    if (flag)
+        //    {
+        //        font.Dispose();
+        //    }
+        //    box.Inflate(-radius, 0);
+        //    return box;
+        //}
 
         public static void Render(this GH_Capsule cap, Graphics G, Image icon, GH_PaletteStyle style)
         {
