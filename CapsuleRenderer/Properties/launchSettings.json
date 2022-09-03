@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "CapsuleRenderer": {
+      "commandName": "Project"
+    },
+    "Win11": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\Rhino 7\\System\\Rhino.exe"
+    }
+  }
+}
