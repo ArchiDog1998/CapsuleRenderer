@@ -9,9 +9,9 @@ namespace CapsuleRenderer
 {
     internal static class Datas
     {
-        private static readonly string _nameSpace = "CapsuleRenderer.";
+        const string _nameSpace = "CapsuleRenderer.";
 
-        private static readonly bool isRenderHighLightDefault = false;
+        const bool isRenderHighLightDefault = false;
         internal static bool IsRenderHighLight 
         {
             get => Instances.Settings.GetValue(_nameSpace + nameof(IsRenderHighLight), isRenderHighLightDefault);
@@ -22,7 +22,7 @@ namespace CapsuleRenderer
             }
         }
 
-        private static readonly bool isRenderInnerOutLineDefault = true;
+        const bool isRenderInnerOutLineDefault = true;
         internal static bool IsRenderInnerOutLine
         {
             get => Instances.Settings.GetValue(_nameSpace + nameof(IsRenderInnerOutLine), isRenderInnerOutLineDefault);
@@ -33,7 +33,7 @@ namespace CapsuleRenderer
             }
         }
 
-        private static readonly bool isCapsuleFlatDefault = true;
+        const bool isCapsuleFlatDefault = true;
         internal static bool IsCapsuleFlat
         {
             get => Instances.Settings.GetValue(_nameSpace + nameof(IsCapsuleFlat), isCapsuleFlatDefault);
@@ -44,7 +44,30 @@ namespace CapsuleRenderer
             }
         }
 
-        internal static readonly int outLineWidthDefault = 1;
+        const bool useTextCapsule = true;
+        internal static bool UseTextCapsule
+        {
+            get => Instances.Settings.GetValue(_nameSpace + nameof(UseTextCapsule), useTextCapsule);
+            set
+            {
+                Instances.Settings.SetValue(_nameSpace + nameof(UseTextCapsule), value);
+                Instances.ActiveCanvas.Refresh();
+            }
+        }
+
+
+        const bool useVerticalTextCap = true;
+        internal static bool UseVerticalTextCap
+        {
+            get => Instances.Settings.GetValue(_nameSpace + nameof(UseVerticalTextCap), useVerticalTextCap);
+            set
+            {
+                Instances.Settings.SetValue(_nameSpace + nameof(UseVerticalTextCap), value);
+                Instances.ActiveCanvas.Refresh();
+            }
+        }
+
+        internal const int outLineWidthDefault = 1;
         internal static int OutLineWidth
         {
             get => Instances.Settings.GetValue(_nameSpace + nameof(OutLineWidth), outLineWidthDefault);
@@ -55,7 +78,7 @@ namespace CapsuleRenderer
             }
         }
 
-        internal static readonly int capsuleRadiusDefault = 6;
+        internal const int capsuleRadiusDefault = 6;
         internal static int CapsuleRadius
         {
             get => Instances.Settings.GetValue(_nameSpace + nameof(CapsuleRadius), capsuleRadiusDefault);
@@ -66,7 +89,7 @@ namespace CapsuleRenderer
             }
         }
 
-        internal static readonly int capsuleHighLightDefault = 8;
+        internal const int capsuleHighLightDefault = 8;
         internal static int CapsuleHighLight
         {
             get => Instances.Settings.GetValue(_nameSpace + nameof(CapsuleHighLight), capsuleHighLightDefault);
@@ -77,7 +100,7 @@ namespace CapsuleRenderer
             }
         }
 
-        internal static readonly double _capsuleOffsetDistanceDefault = 2;
+        internal const double _capsuleOffsetDistanceDefault = 2;
         internal static double CapsuleOffsetDistance
         {
             get => Instances.Settings.GetValue(_nameSpace + nameof(CapsuleOffsetDistance), _capsuleOffsetDistanceDefault);
@@ -85,7 +108,6 @@ namespace CapsuleRenderer
             {
                 Instances.Settings.SetValue(_nameSpace + nameof(CapsuleOffsetDistance), value);
                 Instances.ActiveCanvas.Refresh();
-
             }
         }
     }

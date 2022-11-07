@@ -60,13 +60,35 @@ namespace CapsuleRenderer
                 typeof(CapsuleReplacer).GetRuntimeMethods().Where(m => m.Name.Contains(nameof(CreateCapsule))).First()
             );
 
-            ExchangeMethod(typeof(GH_CapsuleRenderEngine).GetRuntimeMethods().Where(m => m.Name.Contains("RenderOutlines")).First(),
-                typeof(CapsuleReplacer).GetRuntimeMethods().Where(m => m.Name.Contains(nameof(RenderOutlines))).First());
+            ExchangeMethod(
+                typeof(GH_Capsule).GetRuntimeMethods().Where(m =>
+                {
+                    if (!m.Name.Contains("CreateTextCapsule")) return false;
 
-            ExchangeMethod(typeof(GH_CapsuleRenderEngine).GetRuntimeMethods().Where(m => m.Name.Contains("RenderBackground")).First(),
-                typeof(CapsuleReplacer).GetRuntimeMethods().Where(m => m.Name.Contains(nameof(RenderBackground))).First());
+                    var pars = m.GetParameters();
+                    if (pars.Length != 8) return false;
 
-            ExchangeMethod(typeof(GH_CapsuleRenderEngine).GetRuntimeMethods().Where(m =>
+                    if (pars[0].ParameterType != typeof(RectangleF))
+                    {
+                        return false;
+                    }
+
+                    if (pars[6].ParameterType != typeof(int))
+                    {
+                        return false;
+                    }
+                    return true;
+                }).First(),
+                typeof(CapsuleReplacer).GetRuntimeMethods().Where(m => m.Name.Contains(nameof(CreateTextCapsule))).First()
+            );
+
+            ExchangeMethod(typeof(GH_CapsuleRenderEngine).GetRuntimeMethods().First(m => m.Name.Contains("RenderOutlines")),
+                typeof(CapsuleReplacer).GetRuntimeMethods().First(m => m.Name.Contains(nameof(RenderOutlines))));
+
+            ExchangeMethod(typeof(GH_CapsuleRenderEngine).GetRuntimeMethods().First(m => m.Name.Contains("RenderBackground")),
+                typeof(CapsuleReplacer).GetRuntimeMethods().First(m => m.Name.Contains(nameof(RenderBackground))));
+
+            ExchangeMethod(typeof(GH_CapsuleRenderEngine).GetRuntimeMethods().First(m =>
             {
                 if (!m.Name.Contains("CreateRoundedRectangle")) return false;
 
@@ -78,87 +100,42 @@ namespace CapsuleRenderer
                     return true;
                 }
                 return false;
-            }).First(),
-                typeof(CapsuleReplacer).GetRuntimeMethods().Where(m => m.Name.Contains(nameof(CreateRoundedRectangle))).First());
+            }),
+            typeof(CapsuleReplacer).GetRuntimeMethods().First(m => m.Name.Contains(nameof(CreateRoundedRectangle))));
 
-            ExchangeMethod(typeof(GH_CapsuleRenderEngine).GetRuntimeMethods().Where(m => m.Name.Contains("CreateJaggedRectangle")).First(),
-                typeof(CapsuleReplacer).GetRuntimeMethods().Where(m => m.Name.Contains(nameof(CreateJaggedRectangle))).First());
+            ExchangeMethod(typeof(GH_CapsuleRenderEngine).GetRuntimeMethods().First(m => m.Name.Contains("CreateJaggedRectangle")),
+                typeof(CapsuleReplacer).GetRuntimeMethods().First(m => m.Name.Contains(nameof(CreateJaggedRectangle))));
 
             //ExchangeMethod(typeof(GH_CapsuleRenderEngine).GetRuntimeMethods().Where(m => m.Name.Contains("RenderMessage")).First(),
             //    typeof(CapsuleReplacer).GetRuntimeMethods().Where(m => m.Name.Contains(nameof(RenderMessage))).First());
         }
 
-        //public static Rectangle RenderMessage(this GH_CapsuleRenderEngine engine, Graphics G, string message, GH_PaletteStyle style)
-        //{
-        //    GH_Capsule capsule = (GH_Capsule)_capsuleInfo.GetValue(engine);
-        //    int radius = Datas.CapsuleRadius;
-        //    int dimi = 2 * radius;
-        //    if (message == null)
-        //    {
-        //        return Rectangle.Empty;
-        //    }
-        //    if (message.Length == 0)
-        //    {
-        //        return Rectangle.Empty;
-        //    }
-        //    int zoomFadeMedium = GH_Canvas.ZoomFadeMedium;
-        //    if (zoomFadeMedium < 5)
-        //    {
-        //        return Rectangle.Empty;
-        //    }
-        //    Rectangle box = capsule.Box;
-        //    box.Inflate(-radius, 0);
-        //    box.Y = box.Bottom;
-        //    Font font = capsule.Font;
-        //    if (font == null)
-        //    {
-        //        font = GH_FontServer.StandardAdjusted;
-        //    }
-        //    bool flag = false;
-        //    Size size = GH_FontServer.MeasureString(message, font);
-        //    size.Width += 2 + dimi;
-        //    if (size.Width > box.Width)
-        //    {
-        //        double num = (double)box.Width / (double)size.Width;
-        //        font = GH_FontServer.NewFont(font, Convert.ToSingle((double)font.SizeInPoints * num));
-        //        size = GH_FontServer.MeasureString(message, font);
-        //        flag = true;
-        //    }
-        //    box.Height = Math.Max(size.Height, 2 * radius);
-        //    GraphicsPath graphicsPath = new GraphicsPath();
-        //    graphicsPath.AddArc(box.Left - radius, box.Top, dimi, dimi, 270f, 90f);
-        //    graphicsPath.AddArc(box.Left + radius, box.Bottom - dimi, dimi, dimi, 180f, -90f);
-        //    graphicsPath.AddArc(box.Right - 3 * radius, box.Bottom - dimi, dimi, dimi, 90f, -90f);
-        //    graphicsPath.AddArc(box.Right - radius, box.Top, dimi, dimi, 180f, 90f);
-        //    graphicsPath.CloseAllFigures();
-        //    SolidBrush solidBrush = new SolidBrush(Color.FromArgb(zoomFadeMedium, style.Edge));
-        //    Pen pen = new Pen(Color.FromArgb(zoomFadeMedium, style.Edge))
-        //    {
-        //        LineJoin = LineJoin.Bevel
-        //    };
-        //    G.FillPath(solidBrush, graphicsPath);
-        //    G.DrawPath(pen, graphicsPath);
-        //    pen.Dispose();
-        //    solidBrush.Dispose();
-        //    graphicsPath.Dispose();
-        //    if (G.Transform.Elements[0].Equals(1f))
-        //    {
-        //        G.TextRenderingHint = GH_TextRenderingConstants.GH_CrispText;
-        //    }
-        //    else
-        //    {
-        //        G.TextRenderingHint = GH_TextRenderingConstants.GH_SmoothText;
-        //    }
-        //    SolidBrush solidBrush2 = new SolidBrush(Color.FromArgb(zoomFadeMedium, GH_GraphicsUtil.ForegroundColour(style.Edge, 200)));
-        //    G.DrawString(message, font, solidBrush2, box, GH_TextRenderingConstants.CenterCenter);
-        //    solidBrush2.Dispose();
-        //    if (flag)
-        //    {
-        //        font.Dispose();
-        //    }
-        //    box.Inflate(-radius, 0);
-        //    return box;
-        //}
+        public static GH_Capsule CreateTextCapsule(RectangleF box, RectangleF textbox, GH_Palette palette, string text, Font font, GH_Orientation orientation, int radius, int highlight)
+        {
+            if (Datas.UseTextCapsule)
+            {
+                if (!Datas.UseVerticalTextCap)
+                {
+                    ChangeRectF(ref box);
+                    ChangeRectF(ref textbox);
+                }
+
+                highlight = (int)Math.Min(box.Height - Datas.CapsuleRadius, Datas.CapsuleHighLight);
+                return GH_Capsule.CreateTextCapsule(GH_Convert.ToRectangle(box), GH_Convert.ToRectangle(textbox), GH_Palette.Normal, text, font,
+                    Datas.UseVerticalTextCap ? GH_Orientation.vertical_center : GH_Orientation.horizontal_center, Datas.CapsuleRadius, highlight);
+            }
+            else
+            {
+                return GH_Capsule.CreateTextCapsule(GH_Convert.ToRectangle(box), GH_Convert.ToRectangle(textbox), palette, text, font, orientation, radius, highlight);
+            }
+        }
+
+        private static void ChangeRectF(ref RectangleF rect)
+        {
+            const float height = 24;
+            rect = new RectangleF(rect.X, rect.Y + (rect.Height - height)/2, rect.Width, height);
+        }
+
 
         public static void Render(this GH_Capsule cap, Graphics G, Image icon, GH_PaletteStyle style)
         {

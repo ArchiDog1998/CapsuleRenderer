@@ -34,6 +34,9 @@ namespace CapsuleRenderer
                 action.Invoke(highLight.Checked);
             };
 
+            major.DropDownItems.Add(CreateCheckBox("Use Text Capsule (Normal)", Datas.UseTextCapsule, (boolean) => Datas.UseTextCapsule = boolean));
+            major.DropDownItems.Add(CreateCheckBox("Use Text Vertical Capsule", Datas.UseVerticalTextCap, (boolean) => Datas.UseVerticalTextCap = boolean));
+
             return major;
         }
 
