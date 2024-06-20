@@ -8,10 +8,9 @@ namespace CapsuleRenderer.Patch;
 internal class PaletteStylePatch
 {
     [HarmonyPatch(nameof(GH_PaletteStyle.CreateBrush))]
-
     static void Prefix(ref float zoom)
     {
-        if (Datas.IsCapsuleFlat)
+        if (Data.IsCapsuleFlat)
         {
             zoom = 0.2f;
         }

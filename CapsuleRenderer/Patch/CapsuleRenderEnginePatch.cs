@@ -1,6 +1,8 @@
 ﻿using Grasshopper.GUI.Canvas;
 using HarmonyLib;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Reflection.Emit;
 
 namespace CapsuleRenderer.Patch;
 
@@ -8,6 +10,56 @@ namespace CapsuleRenderer.Patch;
 
 internal class CapsuleRenderEnginePatch
 {
+    [HarmonyTranspiler]
+    [HarmonyPatch(nameof(GH_CapsuleRenderEngine.CreateRoundedRectangle), typeof(RectangleF), typeof(float), typeof(float), typeof(float), typeof(float))]
+    static IEnumerable<CodeInstruction> TranspilerRounded(IEnumerable<CodeInstruction> instructions)
+    {
+        return MyTranspiler(instructions);
+    }
+
+    [HarmonyTranspiler]
+    [HarmonyPatch(nameof(GH_CapsuleRenderEngine.CreateJaggedRectangle), typeof(RectangleF), typeof(float), typeof(float), typeof(float), typeof(float), typeof(bool), typeof(bool))]
+    static IEnumerable<CodeInstruction> TranspilerJagged(IEnumerable<CodeInstruction> instructions)
+    {
+        return MyTranspiler(instructions);
+    }
+
+    static IEnumerable<CodeInstruction> MyTranspiler(IEnumerable<CodeInstruction> instructions)
+    {
+        byte state = 0; //0 : before; 1 : skip; 2 : after
+        var result = new List<CodeInstruction>();
+        foreach (var item in instructions)
+        {
+            switch (state)
+            {
+                case 0:
+                    if (item.opcode == OpCodes.Ldloc_2)
+                    {
+                        state = 1;
+                    }
+                    else
+                    {
+                        result.Add(item);
+                    }
+                    break;
+                case 1:
+                    if (item.opcode == OpCodes.Stloc_S
+                        && item.operand is LocalBuilder builder
+                        && builder.LocalIndex == 5)
+                    {
+                        state = 2;
+                    }
+                    break;
+
+                default:
+                    result.Add(item);
+                    break;
+            }
+        }
+
+        return result;
+    }
+
     [HarmonyPatch(nameof(GH_CapsuleRenderEngine.CreateRoundedRectangle), typeof(RectangleF), typeof(float), typeof(float), typeof(float), typeof(float))]
     [HarmonyPatch(nameof(GH_CapsuleRenderEngine.CreateJaggedRectangle), typeof(RectangleF), typeof(float), typeof(float), typeof(float), typeof(float), typeof(bool), typeof(bool))]
     static void Prefix(RectangleF rec, ref float R0, ref float R1, ref float R2, ref float R3)
@@ -31,5 +83,11 @@ internal class CapsuleRenderEnginePatch
 
         r0 *= resize;
         r1 *= resize;
+    }
+
+    [HarmonyPatch("InnerContourPen")]
+    static void Postfix(ref Pen __result)
+    {
+        __result.Width = Data.OutLineWidth;
     }
 }

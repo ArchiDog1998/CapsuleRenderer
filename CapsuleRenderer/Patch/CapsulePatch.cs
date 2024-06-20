@@ -1,7 +1,6 @@
 ﻿using Grasshopper.GUI.Canvas;
 using Grasshopper.Kernel;
 using HarmonyLib;
-using Rhino.Geometry;
 using System;
 using System.Drawing;
 
@@ -13,25 +12,31 @@ internal class CapsulePatch
     [HarmonyPatch(nameof(GH_Capsule.CreateCapsule), typeof(Rectangle), typeof(GH_Palette))]
     static bool Prefix(ref GH_Capsule __result, Rectangle box, GH_Palette palette)
     {
-        int highLight = Math.Min(box.Height - Datas.CapsuleRadius, Datas.CapsuleHighLight);
-        __result = GH_Capsule.CreateCapsule(box, palette, Datas.CapsuleRadius, highLight);
+        var highLight = Math.Min(box.Height - Data.CapsuleRadius, Data.CapsuleHighLight);
+        __result = GH_Capsule.CreateCapsule(box, palette, Data.CapsuleRadius, highLight);
         return false;
     }
 
-    [HarmonyPatch(nameof(GH_Capsule.CreateCapsule), typeof(Rectangle), typeof(GH_Palette), typeof(string), typeof(Font), typeof(GH_Orientation), typeof(int), typeof(int))]
-
-    static bool Prefix(ref GH_Capsule __result, RectangleF box, RectangleF textbox, GH_Palette palette, string text, Font font, GH_Orientation orientation, int radius, int highlight)
+    [HarmonyPatch(nameof(GH_Capsule.CreateTextCapsule), typeof(RectangleF), typeof(RectangleF), typeof(GH_Palette), typeof(string), typeof(Font), typeof(GH_Orientation), typeof(int), typeof(int))]
+    static bool Prefix(ref GH_Capsule __result, RectangleF box, RectangleF textbox, string text, Font font, int radius, int highlight)
     {
-        if (!Datas.UseTextCapsule) return true;
-        if (!Datas.UseVerticalTextCap)
+        if (!Data.UseTextCapsule) return true;
+        if (!Data.UseVerticalTextCap)
         {
             ChangeRectF(ref box);
             ChangeRectF(ref textbox);
         }
 
-        highlight = (int)Math.Min(box.Height - Datas.CapsuleRadius, Datas.CapsuleHighLight);
+        if (highlight == 6)
+        {
+            highlight = Math.Min((int)box.Height - Data.CapsuleRadius, Data.CapsuleHighLight);
+        }
+        if (radius == 3)
+        {
+            radius = Data.CapsuleRadius;
+        }
         __result = GH_Capsule.CreateTextCapsule(GH_Convert.ToRectangle(box), GH_Convert.ToRectangle(textbox), GH_Palette.Normal, text, font,
-            Datas.UseVerticalTextCap ? GH_Orientation.vertical_center : GH_Orientation.horizontal_center, Datas.CapsuleRadius, highlight);
+            Data.UseVerticalTextCap ? GH_Orientation.vertical_center : GH_Orientation.horizontal_center, radius, highlight);
         return false;
     }
 
