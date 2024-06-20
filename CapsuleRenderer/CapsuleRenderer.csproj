@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 	
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <Version>0.9.1</Version>
     <Title>CapsuleRenderer</Title>
     <Description>Advanced options for capsule rendering. Icon was made by ZCS.</Description>
@@ -11,6 +11,7 @@
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageIcon>CapsuleRendererIcon_128.png</PackageIcon>
+	  <LangVersion>preview</LangVersion>
   </PropertyGroup>
 	
   <ItemGroup>
@@ -21,7 +22,9 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="Grasshopper" Version="6.12.19029.6381" IncludeAssets="compile;build" />
+    <PackageReference Include="Grasshopper" Version="8.8.24163.12481" IncludeAssets="compile;build" />
+    <PackageReference Include="Lib.Harmony" Version="2.3.3" />
+    <PackageReference Include="SimpleGrasshopper" Version="1.8.2" />
   </ItemGroup>
   
   <ItemGroup>
