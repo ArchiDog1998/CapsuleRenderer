@@ -24,7 +24,7 @@ public class CapsuleRendererInfo : GH_AssemblyInfo
     //Return a string representing your preferred contact details.
     public override string AuthorContact => "1123993881@qq.com";
 
-    public override string Version => "0.9.2";
+    public override string Version => "0.9.3";
 }
 
 partial class SimpleAssemblyPriority
