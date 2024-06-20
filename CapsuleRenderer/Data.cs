@@ -53,6 +53,9 @@ internal static partial class Data
     [Setting, Config("Capsule Radius")]
     private static readonly int _CapsuleRadius = 6;
 
+    [Setting, Config("Fix Jagged Edges (Restart required)")]
+    private static readonly bool _FixJaggedEdges = true;
+
     static Data()
     {
         OnPropertyChanged += (s, e) => Instances.ActiveCanvas.Refresh();

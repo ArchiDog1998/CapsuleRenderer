@@ -7,7 +7,6 @@ using System.Reflection.Emit;
 namespace CapsuleRenderer.Patch;
 
 [HarmonyPatch(typeof(GH_CapsuleRenderEngine))]
-
 internal class CapsuleRenderEnginePatch
 {
     [HarmonyTranspiler]
