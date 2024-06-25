@@ -2,7 +2,7 @@
 	
   <PropertyGroup>
     <TargetFramework>net7.0-windows</TargetFramework>
-    <Version>0.9.3</Version>
+    <Version>0.9.4</Version>
     <Title>CapsuleRenderer</Title>
     <Description>Advanced options for capsule rendering. Icon was made by ZCS.</Description>
     <TargetExt>.gha</TargetExt>
