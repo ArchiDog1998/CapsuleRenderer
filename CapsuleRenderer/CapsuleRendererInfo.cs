@@ -1,6 +1,7 @@
 ﻿using Grasshopper.GUI;
 using Grasshopper.Kernel;
 using HarmonyLib;
+using SimpleGrasshopper.Util;
 using System;
 using System.Drawing;
 
@@ -11,7 +12,7 @@ public class CapsuleRendererInfo : GH_AssemblyInfo
     public override string Name => "Capsule Renderer";
 
     //Return a 24x24 pixel bitmap to represent this GHA library.
-    public override Bitmap Icon => Properties.Resources.CapsuleRendererIcon_24;
+    public override Bitmap Icon => typeof(CapsuleRendererInfo).Assembly.GetBitmap("CapsuleRendererIcon_24.png");
 
     //Return a short string describing the purpose of this GHA library.
     public override string Description => "Advanced options for capsule rendering. Icon was made by ZCS.";
