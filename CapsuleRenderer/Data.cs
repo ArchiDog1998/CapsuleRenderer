@@ -32,6 +32,14 @@ internal static partial class Data
     }
     public static event Action<bool> OnIsRenderInnerOutLineChanged;
 
+    [Range(0, 15)]
+    [Setting, Config("Inner Out Line Width", parent: "Render Inner Out line")]
+    private static readonly float _InnerOutLineWidth = 3;
+
+    [Range(0, 15)]
+    [Setting, Config("Out Line Width")]
+    private static readonly float _OuterOutLineWidth = 1;
+
     [Setting, Config("Render Flat")]
     private static readonly bool _IsCapsuleFlat = true;
 
@@ -40,10 +48,6 @@ internal static partial class Data
 
     [Setting, Config("Use Text Vertical Capsule")]
     private static readonly bool _UseVerticalTextCap = true;
-
-    [Range(0, 15)]
-    [Setting, Config("Out Line Width", parent: "Render Inner Out line")]
-    private static readonly int _OutLineWidth = 3;
 
     [Range(0, 50)]
     [Setting, Config("Capsule Highlight", parent: "Render Highlight")]

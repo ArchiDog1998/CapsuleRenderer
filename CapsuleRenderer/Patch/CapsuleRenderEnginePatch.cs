@@ -2,6 +2,8 @@
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 
 namespace CapsuleRenderer.Patch;
@@ -9,6 +11,29 @@ namespace CapsuleRenderer.Patch;
 [HarmonyPatch(typeof(GH_CapsuleRenderEngine))]
 internal class CapsuleRenderEnginePatch
 {
+    [HarmonyTranspiler]
+    [HarmonyPatch(nameof(GH_CapsuleRenderEngine.RenderOutlines))]
+    static IEnumerable<CodeInstruction> TranspilerOutline(IEnumerable<CodeInstruction> instructions)
+    {
+        foreach (var instruction in instructions)
+        {
+            if(instruction.opcode == OpCodes.Newobj)
+            {
+                var method = typeof(CapsuleRenderEnginePatch).GetRuntimeMethods().First(m => m.Name == nameof(CreateWidthPen));
+                yield return new CodeInstruction(OpCodes.Call, method);
+            }
+            else
+            {
+                yield return instruction;
+            }
+        }
+    }
+
+    private static Pen CreateWidthPen(Color color)
+    {
+        return new Pen(color, Data.OuterOutLineWidth);
+    }
+
     [HarmonyTranspiler]
     [HarmonyPatch(nameof(GH_CapsuleRenderEngine.CreateRoundedRectangle), typeof(RectangleF), typeof(float), typeof(float), typeof(float), typeof(float))]
     static IEnumerable<CodeInstruction> TranspilerRounded(IEnumerable<CodeInstruction> instructions)
@@ -87,6 +112,6 @@ internal class CapsuleRenderEnginePatch
     [HarmonyPatch("InnerContourPen")]
     static void Postfix(ref Pen __result)
     {
-        __result.Width = Data.OutLineWidth;
+        __result.Width = Data.InnerOutLineWidth;
     }
 }
